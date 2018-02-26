@@ -1,10 +1,21 @@
 package com.appfilm.film.model;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Usuario {
@@ -13,20 +24,33 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "nombre")
-	private String nombre;
+	@NotNull
+	@Column(name = "name")
+	private String name;
 
-	@Column(name = "apellido")
-	private String apellido;
+	@NotNull
+	@Column(name = "surname")
+	private String surname;
 
+	//@Column
+	//private String fechaNac;
+	
 	@Column
-	private String fechaNac;
-	// @Type(type="date")
-	// private Date fechaNac;
+	@CreationTimestamp
+	@NotNull
+	 private Date birthDate;
+	
+	@OneToMany(mappedBy="user_id", fetch= FetchType.EAGER)	
+	private Set<Rating> ratingS = new HashSet<>();
+	
 
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNac=" + fechaNac + "]";
+
+	public Set<Rating> getRatingS() {
+		return ratingS;
+	}
+
+	public void setRatingS(Set<Rating> ratingS) {
+		this.ratingS = ratingS;
 	}
 
 	public long getId() {
@@ -37,29 +61,32 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getApellido() {
-		return apellido;
+	public String getSurname() {
+		return surname;
 	}
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
-	public String getFechaNac() {
-		return fechaNac;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setFechaNac(String fechaNac) {
-		this.fechaNac = fechaNac;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 	
+	
 
+	 
+	 
 }
