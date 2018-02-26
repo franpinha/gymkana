@@ -4,7 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>EmergyaFilms</title>
+
+
 </head>
 <body>
 	<h1>La app para valorar las peliculas</h1>
