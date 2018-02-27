@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.appfilm.film.model.Pelicula;
-import com.appfilm.film.model.Usuario;
+
 
 @Repository
 @Transactional
