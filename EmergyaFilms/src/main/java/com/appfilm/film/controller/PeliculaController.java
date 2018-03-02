@@ -1,5 +1,6 @@
 package com.appfilm.film.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +17,38 @@ import com.appfilm.film.validator.PeliculaValidator;
 @RestController
 public class PeliculaController {
 
+	
+	private static final Logger log = Logger.getLogger(PeliculaController.class);
 	@Autowired
 	private PeliculaValidator peli;
 
 	@Autowired
 	private PeliculaDao peliculaDao;
+	
+Pelicula pelicula = new Pelicula();
 
 	@RequestMapping(value = "/pelicula_nueva", method = RequestMethod.POST)
-	public ResponseEntity<Pelicula> create(@RequestBody Pelicula pelicula)  {
+	public ResponseEntity<Pelicula> create(@RequestBody Pelicula pelicula) {
 		ResponseEntity<Pelicula> re = null;
+	
 		if (pelicula != null) {
-			System.out.println("vamos a hacer la prueba");
-			if (peli.validate(pelicula) == true) {
+			log.info("vamos a hacer la prueba");
+			//Logger.log
+			if (peli.validate(pelicula)) {
 
 				peliculaDao.create(pelicula);
 
-				re = new ResponseEntity<Pelicula>(pelicula, HttpStatus.OK);
-				System.err.println("Pelicula creada");
+				re = new ResponseEntity<>(pelicula, HttpStatus.OK);
+				log.info("Pelicula creada");
 
 			} else {
 
-				re = new ResponseEntity<Pelicula>(pelicula, HttpStatus.BAD_REQUEST);
-				System.err.println("Pelicula no creada");
+				re = new ResponseEntity<>(pelicula, HttpStatus.BAD_REQUEST);
+				log.info("Pelicula no creada");
 			}
 
 		}
+		
 		return re;
 
 	}

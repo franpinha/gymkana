@@ -26,6 +26,9 @@ public class UsuarioDao {
     	return;
     }
     
-	
+    
+    public Usuario getById(long id) {
+		return entityManager.find(Usuario.class, id);
+	}
 
 }
