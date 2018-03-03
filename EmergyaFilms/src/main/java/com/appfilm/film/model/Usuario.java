@@ -14,32 +14,45 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
-
 @Entity
 public class Usuario {
 
+	public Usuario(long id) {
+		super();
+		this.id = id;
+	}
+
+	public Usuario(long id, String name, String surname, Date birthDate, String messageUsuarioJson) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.birthDate = birthDate;
+		this.messageUsuarioJson = messageUsuarioJson;
+	}
+
+	public Usuario() {
+
+	}
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(name = "name")
 	private String name;
 
-	
-
 	@Column(name = "surname")
 	private String surname;
 
-	
 	@Column
 	@Temporal(TemporalType.DATE)
-	 private Date birthDate;
-	
-	@OneToMany(mappedBy="user_id", fetch= FetchType.EAGER)	
-	private Set<Rating> ratingS = new HashSet<>();
-	
+	private Date birthDate;
 
+	@OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
+	private Set<Rating> ratingS = new HashSet<>();
+
+	private String messageUsuarioJson;
 
 	public Set<Rating> getRatingS() {
 		return ratingS;
@@ -81,10 +94,12 @@ public class Usuario {
 		this.birthDate = birthDate;
 	}
 
-	
-	
-	
+	public String getMessageUsuarioJson() {
+		return messageUsuarioJson;
+	}
 
-	 
-	 
+	public void setMessageUsuarioJson(String messageUsuarioJson) {
+		this.messageUsuarioJson = messageUsuarioJson;
+	}
+
 }

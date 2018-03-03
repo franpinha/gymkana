@@ -14,8 +14,27 @@ import javax.persistence.OneToMany;
 @Entity
 public class Pelicula {
 
+	public Pelicula(long id) {
+		super();
+		this.id = id;
+	}
+
+	public Pelicula(long id, String title, boolean isAdult, String date, String[] genres, String messagePeliculaJson) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.isAdult = isAdult;
+		this.date = date;
+		this.genres = genres;
+		this.messagePeliculaJson = messagePeliculaJson;
+	}
+
+	public Pelicula() {
+
+	}
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(name = "title")
@@ -29,6 +48,8 @@ public class Pelicula {
 
 	@Column(name = "genres")
 	private String[] genres;
+
+	private String messagePeliculaJson;
 
 	@OneToMany(mappedBy = "movieId", fetch = FetchType.EAGER)
 	private Set<Rating> ratingS = new HashSet<>();
@@ -79,6 +100,14 @@ public class Pelicula {
 
 	public void setGenres(String[] genres) {
 		this.genres = genres;
+	}
+
+	public String getMessagePeliculaJson() {
+		return messagePeliculaJson;
+	}
+
+	public void setMessagePeliculaJson(String messagePeliculaJson) {
+		this.messagePeliculaJson = messagePeliculaJson;
 	}
 
 }

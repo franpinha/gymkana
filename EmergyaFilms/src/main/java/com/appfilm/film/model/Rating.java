@@ -9,36 +9,55 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
 public class Rating {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	
+
 	@ManyToOne
-	@JoinColumn(name="user_id",updatable=false)
-	private Usuario user_id;
-	
-	
-	
+	@JoinColumn(name = "userId", updatable = false)
+	private Usuario userId;
+
 	@ManyToOne
-	@JoinColumn (name="movieId",updatable=false)
+	@JoinColumn(name = "movieId", updatable = false)
 	private Pelicula movieId;
-	
+
 	@Column
-	@Range(min=1,max=5)
+	@Range(min = 1, max = 5)
 	private int score;
-	
+
 	@Column
-	@CreationTimestamp
-	 private Date date;
+	@Temporal(TemporalType.DATE)
+	private Date date;
+
+	private String messageRatingJson;
+
+	
+	
+	public Rating(long id) {
+		super();
+		this.id = id;
+	}
+
+	public Rating() {
+	}
+
+	public Rating(long id, Usuario userId, Pelicula movieId, int score, Date date, String messageRatingJson) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.movieId = movieId;
+		this.score = score;
+		this.date = date;
+		this.messageRatingJson = messageRatingJson;
+	}
 
 	public long getId() {
 		return id;
@@ -48,12 +67,12 @@ public class Rating {
 		this.id = id;
 	}
 
-	public Usuario getUser_id() {
-		return user_id;
+	public Usuario getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(Usuario user_id) {
-		this.user_id = user_id;
+	public void setUserId(Usuario userId) {
+		this.userId = userId;
 	}
 
 	public Pelicula getMovieId() {
@@ -80,5 +99,12 @@ public class Rating {
 		this.date = date;
 	}
 
-	
+	public String getMessageRatingJson() {
+		return messageRatingJson;
+	}
+
+	public void setMessageRatingJson(String messageRatingJson) {
+		this.messageRatingJson = messageRatingJson;
+	}
+
 }

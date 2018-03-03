@@ -4,39 +4,45 @@ import java.text.DateFormat;
 
 import java.text.SimpleDateFormat;
 
-import org.springframework.http.HttpStatus;
-
+import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;                                                                                                             
 import org.springframework.stereotype.Repository;
 
 import com.appfilm.film.model.Usuario;
 
+
 @Repository
 public class UsuarioValidator {
+	
+	private static final Logger log = Logger.getLogger(UsuarioValidator.class);
 
 	public boolean validate(Usuario usu) {
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String fechaFormateada = sdf.format(usu.getBirthDate());
 
+		
 		boolean isValid = false;
 		try {
-			if (usu.getName().equals(null) || usu.getName().isEmpty() || usu.getSurname().equals(null)
-					|| usu.getSurname().isEmpty() || usu.getBirthDate().equals(null)
-					|| fechaFormateada.length() != 10) {
+			if (usu.getName() == null || usu.getName().isEmpty() || usu.getSurname() == null
+					|| usu.getSurname().isEmpty() || usu.getBirthDate() == null || fechaFormateada.length() != 10) {
 
-				System.out.println("No se cumplen los requisitos de inserción de Usuarios --> "
+				log.error("No se cumplen los requisitos de inserción de Usuarios --> "
 						+ HttpStatus.BAD_REQUEST.getReasonPhrase());
-				isValid = false;
+				usu.setMessageUsuarioJson("No se ha insertado el usuario por no cumplir los requisitos" + HttpStatus.BAD_REQUEST.getReasonPhrase() );
 
 			} else {
-				System.out.println("Se han cumplido los requisitos de inserción de Usuarios --> "
+				log.info("Se han cumplido los requisitos de inserción de Usuarios --> "
 						+ HttpStatus.ACCEPTED.getReasonPhrase());
 				isValid = true;
-
+				usu.setMessageUsuarioJson("Inserción de usuario correcta " + HttpStatus.ACCEPTED.getReasonPhrase() );
 			}
-
+			
+		
+			
 		} catch (Exception ex) {
-
-			System.err.println("Error en la validacion de campos de Usuarios --> hay campos " + ex.getMessage());
+		
+			log.error ("Error en la validacion de campos de Usuarios --> hay campos " + ex.getMessage());
+			usu.setMessageUsuarioJson("hay campos nulos" + ex.getMessage());
 
 		}
 
