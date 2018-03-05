@@ -13,7 +13,6 @@ import com.appfilm.film.dao.RatingDao;
 import com.appfilm.film.model.Rating;
 import com.appfilm.film.validator.RatingValidator;
 
-
 @RestController
 public class RatingController {
 
@@ -24,6 +23,15 @@ public class RatingController {
 
 	@Autowired
 	private RatingDao ratingDao;
+
+	/**
+	 * 
+	 * @param rating
+	 * @return ResponseEntity
+	 * 
+	 *         Método a traves el cual mapeamos con nuestro REST client(POST) para
+	 *         insertar un rating nuevo si cumple las condiciones definidas.
+	 */
 
 	@RequestMapping(value = "/rating_nuevo", method = RequestMethod.POST)
 	public ResponseEntity<Rating> create(@RequestBody Rating rating)  {

@@ -15,7 +15,7 @@ import com.appfilm.film.validator.UsuarioValidator;
 
 @RestController
 public class UsuarioController {
-	
+
 	private static final Logger log = Logger.getLogger(UsuarioController.class);
 
 	@Autowired
@@ -24,33 +24,41 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioDao usuarioDao;
 
+	/**
+	 * 
+	 * @param usuario
+	 * @return ResponseEntity
+	 * 
+	 *         Método a traves el cual mapeamos con nuestro REST client(POST) para
+	 *         insertar un usuario nuevo si cumple las condiciones definidas.
+	 */
+
 	@RequestMapping(value = "/usuario_nuevo", method = RequestMethod.POST)
 	public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
 		ResponseEntity<Usuario> re = null;
 
 		if (usuario != null) {
 			log.info("vamos a hacer la prueba");
-try {
-			if (usu.validate(usuario)) {
-				usuarioDao.create(usuario);
+			try {
+				if (usu.validate(usuario)) {
+					usuarioDao.create(usuario);
 
-				re = new ResponseEntity<>(usuario, HttpStatus.OK);
-				log.info("Usuario creado");
+					re = new ResponseEntity<>(usuario, HttpStatus.OK);
+					log.info("Usuario creado");
 
-			} else {
+				} else {
 
+					re = new ResponseEntity<>(usuario, HttpStatus.BAD_REQUEST);
+					log.info("Usuario no creado");
+				}
+
+			} catch (NullPointerException ex) {
+				log.info("Error de campos nulos o incorrectos capturado");
 				re = new ResponseEntity<>(usuario, HttpStatus.BAD_REQUEST);
-				log.info("Usuario no creado");
+				usuario.setMessageUsuarioJson("Debe introducir un formato de inserción correcto para los usuarios");
 			}
-			
-		}catch(NullPointerException ex) {
-			log.info ("Error de campos nulos o incorrectos capturado");
-			re = new ResponseEntity<>(usuario, HttpStatus.BAD_REQUEST);
-			usuario.setMessageUsuarioJson("Debe introducir un formato de inserción correcto para los usuarios");
+
 		}
-		}
-		
 		return re;
 	}
-
 }

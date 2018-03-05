@@ -8,26 +8,29 @@ import org.springframework.stereotype.Repository;
 
 import com.appfilm.film.model.Usuario;
 
-
 @Repository
 @Transactional
 public class UsuarioDao {
-	
-	
+
 	@PersistenceContext
 	private EntityManager entityManager;
-    
-	
-	/*
-     * Almacena el usuario en la base de datos
-     */
-    public void create(Usuario usuario) {
-    	entityManager.persist(usuario);
-    	return;
-    }
-    
-    
-    public Usuario getById(long id) {
+
+	/**
+	 * @param usuario
+	 *            Almacena el usuario en la base de datos
+	 */
+	public void create(Usuario usuario) {
+		entityManager.persist(usuario);
+		return;
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return Usuario Buscamos la pelicula mediante su id a través del método
+	 *         find().
+	 */
+	public Usuario getById(long id) {
 		return entityManager.find(Usuario.class, id);
 	}
 

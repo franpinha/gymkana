@@ -25,6 +25,14 @@ public class PeliculaController {
 
 	Pelicula pelicula = new Pelicula();
 
+	/**
+	 * 
+	 * @param pelicula
+	 * @return ResponseEntity
+	 * 
+	 *         Método a traves el cual mapeamos con nuestro REST client(POST) para
+	 *         insertar una pelicula nueva si cumple las condiciones definidas.
+	 */
 	@RequestMapping(value = "/pelicula_nueva", method = RequestMethod.POST)
 	public ResponseEntity<Pelicula> create(@RequestBody Pelicula pelicula) {
 		ResponseEntity<Pelicula> re = null;

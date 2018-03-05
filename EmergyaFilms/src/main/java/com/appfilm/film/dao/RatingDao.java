@@ -16,9 +16,10 @@ public class RatingDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	/*
-     * Almacena el rating en la base de datos
-     */
+	/**
+	 * @param rating
+	 * Almacena el rating en la base de datos
+	 */
     public void create(Rating rating) {
     	entityManager.persist(rating);
     	return;

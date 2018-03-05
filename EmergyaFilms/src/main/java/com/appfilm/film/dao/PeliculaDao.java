@@ -19,18 +19,32 @@ public class PeliculaDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	/*
-	 * Almacena la pelicula en la base de datos
+	/**
+	 * @param pelicula
+	 * @return void Almacena la pelicula en la base de datos
 	 */
 	public void create(Pelicula pelicula) {
 		entityManager.persist(pelicula);
 		return;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return Pelicula Buscamos la pelicula mediante su id a través del método
+	 *         find().
+	 */
 	public Pelicula getById(long id) {
 		return entityManager.find(Pelicula.class, id);
 	}
 
+	/**
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 * @return long Método para obtener la pelicula con más rating en un rango de
+	 *         tiempo. Mediante una consulta SQL lo obtenemos.
+	 */
 	public long getByFechaHot(String startDate, String endDate) {
 		long idReturn = 0;
 		Query query = entityManager.createNativeQuery("SELECT avg(score) as rating,movieId FROM Rating where( date > "
@@ -48,6 +62,13 @@ public class PeliculaDao {
 		return idReturn;
 	}
 
+	/**
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 * @return long Método para obtener la pelicula con menos rating en un rango de
+	 *         tiempo. Mediante una consulta SQL lo obtenemos.
+	 */
 	public long getByFechaCold(String startDate, String endDate) {
 		long idReturn = 0;
 		Query query = entityManager.createNativeQuery("SELECT avg(score) as rating,movieId FROM Rating where( date > "
