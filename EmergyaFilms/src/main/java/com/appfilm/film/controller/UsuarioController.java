@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,8 +42,11 @@ try {
 				re = new ResponseEntity<>(usuario, HttpStatus.BAD_REQUEST);
 				log.info("Usuario no creado");
 			}
-		}catch(HttpMessageNotReadableException ex) {
-			log.info("jodere");
+			
+		}catch(NullPointerException ex) {
+			log.info ("Error de campos nulos o incorrectos capturado");
+			re = new ResponseEntity<>(usuario, HttpStatus.BAD_REQUEST);
+			usuario.setMessageUsuarioJson("Debe introducir un formato de inserción correcto para los usuarios");
 		}
 		}
 		

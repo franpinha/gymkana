@@ -29,6 +29,7 @@ public class HotMovieController {
 
 
 
+
 	@RequestMapping(value = "/filtermovie", method = RequestMethod.GET)
 	public ResponseEntity<String> consultaMovie(@RequestParam Map<String, String> parametros) {
 
@@ -39,9 +40,12 @@ public class HotMovieController {
 		String startDate = caracter + parametros.get("startDate") + caracter;
 		String endDate = caracter + parametros.get("endDate") + caracter;
 		Pelicula peli = null;
+	
+		
+		
 		try {
 		if ( report == null|| report.isEmpty() || startDate.isEmpty()
-				|| startDate == null || endDate.isEmpty() || endDate == null) {
+				 || endDate.isEmpty() || startDate.length() != 12||endDate.length()!=12||!report.equals("hot")||!!report.equals("cold")) {
 			log.info("Si no cumplimos las validaciones mostramos error");
 			re = new ResponseEntity<>("Error de campo erroneo", HttpStatus.BAD_REQUEST);
 		}
@@ -63,6 +67,9 @@ public class HotMovieController {
 		
 		}catch(NullPointerException ex) {
 			ex.getMessage();
+			re = new ResponseEntity<>("Error de campos erroneos o nulos", HttpStatus.BAD_REQUEST);
+			
+			
 		}
 		
 		return re;

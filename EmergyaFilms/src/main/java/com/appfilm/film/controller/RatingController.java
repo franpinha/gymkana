@@ -1,6 +1,5 @@
 package com.appfilm.film.controller;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ import com.appfilm.film.validator.RatingValidator;
 public class RatingController {
 
 	private static final Logger log = Logger.getLogger(RatingController.class);
-	
+
 	@Autowired
 	private RatingValidator rtng;
 
@@ -27,24 +26,29 @@ public class RatingController {
 	private RatingDao ratingDao;
 
 	@RequestMapping(value = "/rating_nuevo", method = RequestMethod.POST)
-	public ResponseEntity<Rating> create(@RequestBody Rating rating) {
+	public ResponseEntity<Rating> create(@RequestBody Rating rating)  {
 
 		ResponseEntity<Rating> re = null;
 
 		if (rating != null) {
 			log.info("vamos a hacer la prueba de Rating");
+			try {
+				if (rtng.validate(rating)) {
 
-			if (rtng.validate(rating)) {
+					ratingDao.create(rating);
 
-				ratingDao.create(rating);
+					re = new ResponseEntity<>(rating, HttpStatus.OK);
+					log.info("Rating creado");
 
-				re = new ResponseEntity<>(rating, HttpStatus.OK);
-				log.info("Rating creado");
+				} else {
 
-			} else {
-
+					re = new ResponseEntity<>(rating, HttpStatus.BAD_REQUEST);
+					log.error("Rating no creado");
+				}
+			} catch (NullPointerException ex) {
+				log.info("Error de campos nulos o incorrectos capturado");
 				re = new ResponseEntity<>(rating, HttpStatus.BAD_REQUEST);
-				log.error("Rating no creado");
+				rating.setMessageRatingJson("Debe introducir un formato de inserción correcto para los ratings");
 			}
 
 		}

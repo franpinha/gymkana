@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import com.appfilm.film.model.Pelicula;
-import com.fasterxml.jackson.core.JsonLocation;
+
 
 
 
@@ -16,19 +16,24 @@ import com.fasterxml.jackson.core.JsonLocation;
 @Repository
 public class PeliculaValidator {
 
-	JsonLocation js;
+	
 	private static final Logger log = Logger.getLogger(PeliculaValidator.class);
+	
+	
 	
 	public boolean validate(Pelicula peli)  {
 		boolean isValid = false;
+		
+		
 		try {
+			int anio = Integer.parseInt(peli.getDate());
 			if (peli.getTitle() == null || peli.getTitle().isEmpty() || peli.getDate() == null
-					|| peli.getDate().isEmpty() || peli.getGenres().length <= 0 || peli.getGenres().length > 3) {
+					|| peli.getDate().isEmpty()||anio<=1900||anio>2018 || peli.getGenres().length <= 0 || peli.getGenres().length > 3) {
 
 			
 				log.info("No se cumplen los requisitos de inserción de Peliculas --> "
 						+ HttpStatus.BAD_REQUEST.getReasonPhrase());
-				peli.setMessagePeliculaJson("No se ha insertado la pelicula por no cumplir los requisitos " + HttpStatus.BAD_REQUEST.getReasonPhrase());
+				peli.setMessagePeliculaJson("No se ha insertado la pelicula por no cumplir los requisitos,rervise los campos --> " + HttpStatus.BAD_REQUEST.getReasonPhrase());
 
 			} else {
 				log.info("Se han cumplido los requisitos de inserción de Peliculas --> "
@@ -38,7 +43,9 @@ public class PeliculaValidator {
 			}
 			
 		
-		
+		}catch(NumberFormatException ex) {
+			log.info("Error en el año de pelicula");
+			peli.setMessagePeliculaJson("Formato de año no correcto " + ex.getMessage());
 			
 		}catch (Exception ex2) {
 			
